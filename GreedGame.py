@@ -60,13 +60,11 @@ class GreedGame:
         return self._player[player].total_score
 
     def score(self, player, roll):
-        if player != self._whos_turn:
-            raise NotYourTurnException("It is not your turn!")
+        self.check_turn(player)
         return self._player[player].score(roll)
 
     def end_turn(self, player):
-        if player != self._whos_turn:
-            raise NotYourTurnException("It is not your turn!")
+        self.check_turn(player)
         player_score = self._player[player].end_turn()
         if player_score >= 3000 and self._last_round == False:
             self._last_round = True
@@ -83,6 +81,9 @@ class GreedGame:
         return self.whos_turn
 
     def roll(self, player):
+        self.check_turn(player)
+        return self._player[player].roll()
+
+    def check_turn(self, player):
         if player != self._whos_turn:
             raise NotYourTurnException("It is not your turn!")
-        return self._player[player].roll()
