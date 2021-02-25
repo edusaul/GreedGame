@@ -39,7 +39,7 @@ class GreedGame:
         return 'First turn is for player ' + str(self._whos_turn + 1)
 
     def end_game(self):
-        message = 'Player ' + str(self.who_wins() + 1) + ' wins!!!\nTotal score:\n'
+        message = 'Player ' + str(self.who_wins() + 1) + ' wins!!!\nFinal score:\n'
         for i in range(self.number_of_players):
             message += ' Player ' + str(i + 1) + ' = ' + str(self.total_score(i)) + ' points\n'
 

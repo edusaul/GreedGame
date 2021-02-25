@@ -215,7 +215,7 @@ class MyTestCase(unittest.TestCase):
 
         end_game = greed_game.end_turn(1)
 
-        self.assertEqual('Player 1 wins!!!\nTotal score:\n Player 1 = 3000 points\n Player 2 = 0 points\n', end_game)
+        self.assertEqual('Player 1 wins!!!\nFinal score:\n Player 1 = 3000 points\n Player 2 = 0 points\n', end_game)
 
         greed_game.start_game()
 
@@ -234,7 +234,7 @@ class MyTestCase(unittest.TestCase):
 
         end_game = greed_game.end_turn(0)
 
-        self.assertEqual('Player 2 wins!!!\nTotal score:\n Player 1 = 1000 points\n Player 2 = 3050 points\n', end_game)
+        self.assertEqual('Player 2 wins!!!\nFinal score:\n Player 1 = 1000 points\n Player 2 = 3050 points\n', end_game)
 
     def test_can_not_start_game_with_already_started_game(self):
         greed_game = GreedGame()
