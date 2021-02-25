@@ -1,0 +1,2 @@
+class NumberOfPlayersError(Exception):
+    pass
