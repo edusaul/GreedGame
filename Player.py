@@ -1,6 +1,7 @@
 from Dice import DiceSet
 from Score import score
 
+
 class Player:
     NUMBER_OF_DICE_FACES = 7
 
@@ -35,7 +36,7 @@ class Player:
 
     def roll(self):
         number_of_dices = 5
-        if self._last_roll != None:
+        if self._last_roll is not None:
             aux = []
             for i in range(self.NUMBER_OF_DICE_FACES): aux.append((i, self._last_roll.count(i)))
             for i, ni in aux:
@@ -47,6 +48,8 @@ class Player:
                         if i == 1 or i == 5:
                             number_of_dices -= ni
                         ni = 0
+            if number_of_dices == 0:
+                number_of_dices = 5
         self._dice.roll(number_of_dices)
         self._last_roll = self._dice.values
         return self._last_roll

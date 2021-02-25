@@ -2,9 +2,9 @@ import unittest
 
 from GreedGame import *
 
+
 class MyTestCase(unittest.TestCase):
     def test_number_of_players_must_be_at_least_two(self):
-        # with self.assertRaises(AttributeError): GreedGame(1)
 
         greed_game = GreedGame()
 
@@ -16,9 +16,32 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual('There must be at least two players', result)
 
+    def test_start_game(self):
+
+        greed_game = GreedGame()
+
+        self.assertEqual(None, greed_game._player)
+
+        number_of_players = 2
+        greed_game.start_game(number_of_players)
+
+        self.assertEqual(2, len(greed_game._player))
+
+    def test_end_game(self):
+
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        self.assertEqual(2, len(greed_game._player))
+
+        greed_game.end_game()
+
+        self.assertEqual(None, greed_game._player)
+
     def test_score_of_players_begins_with_0_pints(self):
 
         greed_game = GreedGame()
+        greed_game.start_game()
         score_p1 = greed_game.total_score(0)
         score_p2 = greed_game.total_score(1)
 
@@ -35,6 +58,7 @@ class MyTestCase(unittest.TestCase):
     def test_player_1_score_and_ends_turn_with_less_than_300_points_accumulated(self):
 
         greed_game = GreedGame()
+        greed_game.start_game()
 
         p1_score = greed_game.score(0, [1, 2, 3, 4, 5])
         greed_game.end_turn(0)
@@ -53,6 +77,7 @@ class MyTestCase(unittest.TestCase):
     def test_player_1_score_and_ends_turn_with_more_than_300_points_accumulated(self):
 
         greed_game = GreedGame()
+        greed_game.start_game()
         greed_game._player[0]._total_score = 1000
 
         p1_score = greed_game.score(0, [1, 2, 3, 4, 5])
@@ -65,6 +90,7 @@ class MyTestCase(unittest.TestCase):
     def test_number_of_dice_for_rolling(self):
 
         greed_game = GreedGame()
+        greed_game.start_game()
 
         self.assertEqual(len(greed_game.roll(0)), 5)
 
@@ -88,16 +114,21 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(len(greed_game.roll(0)), 5)
 
+        greed_game._player[0]._last_roll = [1, 1, 1, 5, 5]
+
+        self.assertEqual(len(greed_game.roll(0)), 5)
+
     def test_player1_scores_rolls_again_scoring_and_end_turn(self):
 
         greed_game = GreedGame()
+        greed_game.start_game()
 
-        au = greed_game.score(0, [1, 1, 1, 4, 3])
+        greed_game.score(0, [1, 1, 1, 4, 3])
         p1_total_score = greed_game.total_score(0)
 
         self.assertEqual(p1_total_score, 0)
 
-        au = greed_game.score(0, [5, 3])
+        greed_game.score(0, [5, 3])
         greed_game.end_turn(0)
         p1_total_score = greed_game.total_score(0)
 
@@ -106,18 +137,36 @@ class MyTestCase(unittest.TestCase):
     def test_turn_ends_when_scoring_equals_zero_and_score_is_lost(self):
 
         greed_game = GreedGame()
+        greed_game.start_game()
 
         roll = greed_game.roll(0)
         greed_game.score(0, [1, 1, 1, 4, 3])
         p1_total_score = greed_game.total_score(0)
 
-        self.assertEqual(p1_total_score, 0)
         self.assertEqual(greed_game._player[0]._last_roll, roll)
+        self.assertEqual(p1_total_score, 0)
 
         greed_game.score(0, [3, 4])
 
         self.assertEqual(greed_game._player[0]._last_roll, None)
         self.assertEqual(p1_total_score, 0)
+
+    def test_first_turn_for_player1_then_turn_for_player2_then_player1(self):
+
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        self.assertEqual('It is turn for player 1', greed_game.whos_turn)
+
+        greed_game.end_turn(0)
+
+        self.assertEqual('It is turn for player 2', greed_game.whos_turn)
+
+        greed_game.end_turn(0)
+
+        self.assertEqual('It is turn for player 1', greed_game.whos_turn)
+
+
 
 
 if __name__ == '__main__':

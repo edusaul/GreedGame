@@ -4,7 +4,8 @@ from Player import Player
 
 class GreedGame:
     def __init__(self):
-        self._player = [Player()] * 2
+        self._player = None
+        self._whos_turn = None
 
     @property
     def number_of_players(self):
@@ -17,6 +18,18 @@ class GreedGame:
         else:
             self._player = [Player()] * n_of_players
 
+    @property
+    def whos_turn(self):
+        return 'It is turn for player ' + str(self._whos_turn+1)
+
+    def start_game(self, n_of_players=2):
+        self.number_of_players = n_of_players
+        self._whos_turn = 0
+        return self
+
+    def end_game(self):
+        self._player = None
+
     def total_score(self, player):
         return self._player[player].total_score
 
@@ -24,8 +37,12 @@ class GreedGame:
         return self._player[player].score(roll)
 
     def end_turn(self, player):
-        return self._player[player].end_turn()
+        self._player[player].end_turn()
+        if self._whos_turn + 2 <= self.number_of_players:
+            self._whos_turn += 1
+        else:
+            self._whos_turn = 0
+        return self.whos_turn
 
     def roll(self, player):
         return self._player[player].roll()
-
