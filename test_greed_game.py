@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
 
         greed_game = GreedGame()
 
-        self.assertEqual(None, greed_game._player)
+        self.assertEqual([], greed_game._player)
 
         number_of_players = 2
         greed_game.start_game(number_of_players)
@@ -36,7 +36,7 @@ class MyTestCase(unittest.TestCase):
 
         greed_game.end_game()
 
-        self.assertEqual(None, greed_game._player)
+        self.assertEqual([], greed_game._player)
 
     def test_score_of_players_begins_with_0_pints(self):
 
@@ -158,13 +158,72 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual('It is turn for player 1', greed_game.whos_turn)
 
+        turn = greed_game.end_turn(0)
+
+        self.assertEqual('It is turn for player 2', turn)
+
+        turn = greed_game.end_turn(1)
+
+        self.assertEqual('It is turn for player 1', turn)
+
+    def test_game_returs_correct_points_after_both_players_score(self):
+
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        greed_game.score(0, [1, 1, 1, 2, 2])
         greed_game.end_turn(0)
 
-        self.assertEqual('It is turn for player 2', greed_game.whos_turn)
+        greed_game.score(1, [1, 1, 5, 2, 2])
+        greed_game.score(1, [1, 1, 5, 2, 2])
+        greed_game.end_turn(1)
 
+        self.assertEqual(1000, greed_game.total_score(0))
+        self.assertEqual(500, greed_game.total_score(1))
+
+
+    def test_last_round_starts_when_player_scores_3000_points(self):
+
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        self.assertFalse(greed_game.is_last_round)
+
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.score(0, [1, 1, 1, 2, 2])
         greed_game.end_turn(0)
 
-        self.assertEqual('It is turn for player 1', greed_game.whos_turn)
+        self.assertTrue(greed_game.is_last_round)
+
+    def test_game_ends_after_last_round_for_all_players(self):
+
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.end_turn(0)
+
+        greed_game.end_turn(1)
+
+        self.assertEqual([], greed_game._player)
+
+    def test_player_with_greater_score_after_final_round_wins(self):
+
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.end_turn(0)
+
+        end_game = greed_game.end_turn(1)
+
+        self.assertEqual('Player 1 wins!!!\nTotal score:\n Player 1 = 3000 points\n Player 2 = 0 points\n', end_game)
+
 
 
 

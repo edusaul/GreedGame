@@ -32,7 +32,7 @@ class Player:
 
         self._points = 0
         self._last_roll = None
-        return self
+        return self._total_score
 
     def roll(self):
         number_of_dices = 5
