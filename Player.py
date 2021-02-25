@@ -27,11 +27,13 @@ class Player:
         return self._points
 
     def end_turn(self):
+        # print('bb')
         if self._total_score + self._points >= 300:
             self._total_score += self._points
 
         self._points = 0
         self._last_roll = None
+        # print('aa')
         return self._total_score
 
     def roll(self):

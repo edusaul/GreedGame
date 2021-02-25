@@ -224,7 +224,36 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual('Player 1 wins!!!\nTotal score:\n Player 1 = 3000 points\n Player 2 = 0 points\n', end_game)
 
+        greed_game.start_game()
 
+        greed_game.score(0, [1, 1, 1, 2, 2])
+        greed_game.end_turn(0)
+
+        greed_game.score(1, [1, 1, 1, 2, 2])
+        greed_game.end_turn(1)
+
+        greed_game.end_turn(0)
+
+        greed_game.score(1, [1, 1, 1, 2, 2])
+        greed_game.score(1, [1, 1, 1, 2, 2])
+        greed_game.score(1, [5, 3, 4, 2, 2])
+        greed_game.end_turn(1)
+
+        end_game = greed_game.end_turn(0)
+
+        self.assertEqual('Player 2 wins!!!\nTotal score:\n Player 1 = 1000 points\n Player 2 = 3050 points\n', end_game)
+
+    def test_can_not_start_game_with_already_started_game(self):
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        result = None
+        try:
+            greed_game.start_game()
+        except Exception as ex:
+            result = ex.args[0]
+
+        self.assertEqual("Finish the current game to start a new one!", result)
 
 
 

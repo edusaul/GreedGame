@@ -1,0 +1,2 @@
+class StartWithGameRunningException(Exception):
+    pass
