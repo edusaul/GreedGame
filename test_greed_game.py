@@ -55,7 +55,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(0, score_p2)
         self.assertEqual(0, score_p3)
 
-    def test_player_1_score_and_ends_turn_with_less_than_300_points_accumulated(self):
+    def test_player_score_and_ends_turn_with_less_than_300_points_accumulated(self):
 
         greed_game = GreedGame()
         greed_game.start_game()
@@ -66,13 +66,6 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(150, p1_score)
         self.assertEqual(0, p1_total_score)
-
-        p1_score = greed_game.score(0, [1, 1, 3, 4, 1])
-        greed_game.end_turn(0)
-        p1_total_score = greed_game.total_score(0)
-
-        self.assertEqual(1000, p1_score)
-        self.assertEqual(1000, p1_total_score)
 
     def test_player_1_score_and_ends_turn_with_more_than_300_points_accumulated(self):
 
@@ -255,7 +248,42 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual("Finish the current game to start a new one!", result)
 
+    def test_can_not_finish_turn_when_is_not_players_turn(self):
+        greed_game = GreedGame()
+        greed_game.start_game()
 
+        greed_game.end_turn(0)
+        result = None
+        try:
+            greed_game.end_turn(0)
+        except Exception as ex:
+            result = ex.args[0]
+
+        self.assertEqual("It is not your turn!", result)
+
+    def test_can_not_score_when_is_not_players_turn(self):
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        result = None
+        try:
+            greed_game.score(1, [1, 1, 1, 2, 2])
+        except Exception as ex:
+            result = ex.args[0]
+
+        self.assertEqual("It is not your turn!", result)
+
+    def test_can_not_roll_when_is_not_players_turn(self):
+        greed_game = GreedGame()
+        greed_game.start_game()
+
+        result = None
+        try:
+            greed_game.roll(1)
+        except Exception as ex:
+            result = ex.args[0]
+
+        self.assertEqual("It is not your turn!", result)
 
 if __name__ == '__main__':
     unittest.main()

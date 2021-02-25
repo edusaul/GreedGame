@@ -1,3 +1,4 @@
+from Exceptions.NotYourTurnException import NotYourTurnException
 from Exceptions.NumberOfPlayersException import NumberOfPlayersError
 from Exceptions.StartWithGameRunningException import StartWithGameRunningException
 from Player import Player
@@ -59,14 +60,14 @@ class GreedGame:
         return self._player[player].total_score
 
     def score(self, player, roll):
+        if player != self._whos_turn:
+            raise NotYourTurnException("It is not your turn!")
         return self._player[player].score(roll)
 
     def end_turn(self, player):
-        # print('b')
-        # print(player)
+        if player != self._whos_turn:
+            raise NotYourTurnException("It is not your turn!")
         player_score = self._player[player].end_turn()
-        # print('a')
-        # print(player_score)
         if player_score >= 3000 and self._last_round == False:
             self._last_round = True
             self._last_round_started_by = player
@@ -82,4 +83,6 @@ class GreedGame:
         return self.whos_turn
 
     def roll(self, player):
+        if player != self._whos_turn:
+            raise NotYourTurnException("It is not your turn!")
         return self._player[player].roll()
