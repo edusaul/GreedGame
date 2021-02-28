@@ -159,7 +159,7 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual('It is turn for player 1', turn)
 
-    def test_game_returs_correct_points_after_both_players_score(self):
+    def test_game_returns_correct_points_after_both_players_score(self):
 
         greed_game = GreedGame()
         greed_game.start_game()
